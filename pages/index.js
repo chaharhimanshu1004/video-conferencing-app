@@ -1,15 +1,32 @@
-
-import { useSocket } from "@/context/socket";
-import { useEffect } from "react";
-
+import {v4 as uuidv4} from 'uuid'
+import { useRouter } from 'next/navigation';
+import styles from "@/styles/home.module.css"
+import { useState } from 'react';
 export default function Home() {
-  const socket = useSocket();
-  useEffect(() => {
-   socket?.on("connect", () => {
-     console.log("Socket connected",socket.id);
-   });
-  },[socket]);
+  const router = useRouter();
+  const [roomId,setRoomId] = useState('');
+  const createAndJoin = () =>{
+    const roomId = uuidv4(); // will create a random roomId
+    router.push(`/${roomId}`) // will navigate to that route -- [roomId] means dynamic route hoga any value aa skti
+  }
+  const joinRoom = () =>{
+    if(roomId)router.push(`${roomId}`);
+    else {
+      alert("Please provide a valid room ID");
+    }
+  }
   return (
-   <h1>Welcome to the video-conferencing-app</h1>
+    <>
+      {/* <h1>Welcome</h1> */}
+      <div className={styles.homeContainer}>
+          <h1>Google Meet Clone</h1>
+          <div className={styles.enterRoom}>
+            <input placeholder='Enter Room ID' value={roomId} onChange={(e)=>setRoomId(e.target.value)} />
+            <button onClick={joinRoom}>Join Room</button>
+          </div>
+          <span  className={styles.separatorText} >--------------- OR ---------------</span>
+          <button onClick={createAndJoin}>Create a new room</button>
+      </div>
+    </>
   );
 }
