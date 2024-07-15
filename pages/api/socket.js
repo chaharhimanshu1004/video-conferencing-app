@@ -15,6 +15,18 @@ const socketHandler = (req, res) => {
                 socket.broadcast.to(roomId).emit('user-connected',userId); // user connected msg to everyone in the room except myself
 
             })
+            socket.on("user-toggle-audio",(userId,roomId)=>{
+                console.log(`user ${userId} toggled audio`);
+                socket.broadcast.to(roomId).emit("user-toggled-audio",userId);
+            })
+            socket.on("user-toggle-video",(userId,roomId)=>{
+                console.log(`user ${userId} toggled video`);
+                socket.broadcast.to(roomId).emit("user-toggled-video",userId);
+            })
+            socket.on("user-leave",(userId,roomId)=>{
+                console.log(`user ${userId} toggled video`);
+                socket.broadcast.to(roomId).emit("user-leave",userId);
+            })
         })
     }
     res.end();
